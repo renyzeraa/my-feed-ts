@@ -1,12 +1,30 @@
-import { useState } from 'react'
+import { FormEvent, useState, ChangeEvent, InvalidEvent } from 'react'
 import styles from './Post.module.css'
 import { Comment } from './Comment'
 import { Avatar } from './Avatar'
 import { format, formatDistanceToNow } from 'date-fns'
 import ptBR from 'date-fns/locale/pt-BR'
 
-export function Post({ id, author, content, publishedAt }) {
-    const [comments, setComments] = useState([])
+interface Author {
+    name: string
+    avatarUrl: string
+    role: string
+}
+
+interface Content {
+    type: 'paragraph' | 'link'
+    content: string
+}
+
+interface PostProps {
+    author: Author
+    publishedAt: Date
+    content: Content[]
+    id: number
+}
+
+export function Post({ id, author, content, publishedAt }: PostProps) {
+    const [comments, setComments] = useState<string[]>([])
     const [newCommentText, setNewCommentText] = useState('')
     const publishedDateFormated = format(
         publishedAt,
@@ -18,18 +36,18 @@ export function Post({ id, author, content, publishedAt }) {
         addSuffix: true
     })
 
-    function handleCreateNewComment(oEv) {
+    function handleCreateNewComment(oEv: FormEvent) {
         oEv.preventDefault()
         setComments([...comments, newCommentText])
         setNewCommentText('')
     }
 
-    function handleNewCommentChange(oEv) {
+    function handleNewCommentChange(oEv: ChangeEvent<HTMLTextAreaElement>) {
         oEv.target.setCustomValidity('')
         setNewCommentText(oEv.target.value)
     }
 
-    function deleteComment(commentToDelete) {
+    function deleteComment(commentToDelete: string) {
         // não deve sofrer mutação, imutabilidade
         const newComments = comments.filter(comment => {
             return commentToDelete !== comment
@@ -37,7 +55,7 @@ export function Post({ id, author, content, publishedAt }) {
         setComments(newComments)
     }
 
-    function handleCreateNewInvalid(oEv) {
+    function handleCreateNewInvalid(oEv: InvalidEvent<HTMLTextAreaElement>) {
         oEv.target.setCustomValidity('Este campo é obrigatório')
     }
 
