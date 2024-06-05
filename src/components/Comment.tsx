@@ -4,15 +4,20 @@ import { Avatar } from './Avatar'
 import styles from './Comment.module.css'
 import { useState } from 'react'
 
-export function Comment({ content, onDeleteComment }) {
-    const [ likeCount, setLikeCount ] = useState(0)
+interface CommentProps {
+    content: string
+    onDeleteComment: (content: string) => void
+}
+
+export function Comment({ content, onDeleteComment }: CommentProps) {
+    const [likeCount, setLikeCount] = useState(0)
 
     function handleDeleteComment() {
         onDeleteComment(content)
     }
 
     function handleLikeComment() {
-        setLikeCount((count) => count + 1 )
+        setLikeCount((count) => count + 1)
     }
 
     return (

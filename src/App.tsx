@@ -1,12 +1,12 @@
 // named export evita problemas na importação dos arquivos
-import { Post } from './components/Post.jsx'
+import { Post, PostProps } from './components/Post.jsx'
 import { Header } from './components/Header.jsx'
 import { Sidebar } from './components/Sidebar.jsx'
 
 import './global.css'
 import styles from './App.module.css'
 
-const posts = [
+const posts: PostProps[] = [
     {
         id: 1,
         author: {
